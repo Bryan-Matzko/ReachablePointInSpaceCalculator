@@ -1,0 +1,11 @@
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\bin\Debug\netcoreapp2.0\MTE204Project.deps.json
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\bin\Debug\netcoreapp2.0\MTE204Project.runtimeconfig.json
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\bin\Debug\netcoreapp2.0\MTE204Project.runtimeconfig.dev.json
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\bin\Debug\netcoreapp2.0\MTE204Project.dll
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\bin\Debug\netcoreapp2.0\MTE204Project.pdb
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\obj\Debug\netcoreapp2.0\MTE204Project.csprojResolveAssemblyReference.cache
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\obj\Debug\netcoreapp2.0\MTE204Project.csproj.CoreCompileInputs.cache
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\obj\Debug\netcoreapp2.0\MTE204Project.AssemblyInfoInputs.cache
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\obj\Debug\netcoreapp2.0\MTE204Project.AssemblyInfo.cs
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\obj\Debug\netcoreapp2.0\MTE204Project.dll
+C:\Users\bjcma\source\repos\MTE204Project\MTE204Project\obj\Debug\netcoreapp2.0\MTE204Project.pdb

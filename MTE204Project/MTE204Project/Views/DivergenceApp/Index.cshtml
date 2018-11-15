@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@model List<FinalAngles>
+<html>
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding:10px 50px;">
+        <h2>Divergence Application</h2>
+
+        <p>This app will determine whether or not a point can be reached by a robotic arm and with what possible angles</p>
+
+        <div style="border-style:solid; padding:20px; width:700px;">
+            <form asp-controller="DivergenceApp" asp-action="Index">
+                <p>
+                    <h2>Link Lengths: (cm)</h2>
+                    Link 1 : <input type="text" name="l1" value="@ViewData["l1"]" style="width:100px;">
+                    Link 2 : <input type="text" name="l2" value="@ViewData["l2"]" style="width:100px;">
+                    Link 3 : <input type="text" name="l3" value="@ViewData["l3"]" style="width:100px;">
+                    <br />
+                    <h2>Point:</h2>
+                    (
+                    <input type="text" name="x" value="@ViewData["x"]" style="width:75px;" />, 
+                    <input type="text" name="y" value="@ViewData["y"]" style="width:75px;" />, 
+                    <input type="text" name="z" value="@ViewData["z"]" style="width:75px;" />)
+                    <br />
+                    <br />
+                    <input type="submit" value="Filter" />
+                </p>
+            </form>
+        </div>
+
+        <p>You Veiwing data for the following parameters, angles in degrees:</p>
+        <p>Link 1 = @ViewData["l1"] cm Link 2 = @ViewData["l2"] cm Link 3 = @ViewData["l3"] cm</p>
+        <p>Final Point : (@ViewData["x"], @ViewData["y"], @ViewData["z"])</p>
+
+        <h2>Angles Resulting in Convergence</h2>
+        <table>
+            <tr>
+                <th>Principle Angle</th>
+                <th>End Psi</th>
+                <th>Link 1 Angle</th>
+                <th>Link 2 Angle</th>
+                <th>Link 3 Angle</th>
+            </tr>
+            @foreach (var solution in Model)
+            {
+                <tr>
+                    <td>@solution.principleAngle</td>
+                    <td>@solution.endPsi</td>
+                    <td>@solution.link1Angle</td>
+                    <td>@solution.link2Angle</td>
+                    <td>@solution.link3Angle</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</body>
+</html>
