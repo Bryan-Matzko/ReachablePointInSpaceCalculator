@@ -1,50 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    public class MatrixSolver
+    public static class MatrixSolver
     {
         #region Variables
-        //Stores all variables corresponding to the class
-        private double[] lengths = new double[3];
-        private double[] guesses = new double[3];
+        private readonly static double[] guesses = new double[3];
+        private readonly static double[] f = new double[3];
+        private readonly static double[,] jInv = new double[3, 3];
 
-        private double[] f = new double[3];
-        private double[,] jInv = new double[3, 3];
+        private static double endR, endZ, endPsi, inerRadius;
 
-        private const double TOL = 0.00001, MAXITERATIONS = 150;
-        private double endR, endZ, endPsi, inerRadius;
+        private const double TOL = 0.00001, ANGLETOL = 0.75, ABSVALUETOL = 0.00000001;
+        private const int MAXITERATIONS = 150;
 
-        public double innerRadius;
-        #endregion
+        public static double innerRadius;
+        public static double[] lengths = new double[3];
 
-        #region Initialization
-        //Set lengths when matrix is created and set radius and guesses
-        public MatrixSolver(double[] lengths)
-        {
-            this.lengths = lengths;
-            SetRadius(lengths);
-            SetGuesses();
-        }
+        public static bool runFastFlag;
         #endregion
 
         #region update F and J-Inverse
         //Array representing F from the stored guesses by class
-        private void UpdateF()
+        private static void UpdateF()
         {
-            f[0] = lengths[0] * Math.Sin(guesses[0]) + lengths[1] * Math.Sin(guesses[1] + guesses[0])
-                + lengths[2] * Math.Sin(endPsi) - endR;
-            f[1] = lengths[0] * Math.Cos(guesses[0]) + lengths[1] * Math.Cos(guesses[0] + guesses[1])
-                + lengths[2] * Math.Cos(endPsi) - endZ;
+            f[0] = (lengths[0] * Math.Sin(guesses[0])) + (lengths[1] * Math.Sin(guesses[1] + guesses[0]))
+                + (lengths[2] * Math.Sin(endPsi)) - endR;
+            f[1] = (lengths[0] * Math.Cos(guesses[0])) + (lengths[1] * Math.Cos(guesses[0] + guesses[1]))
+                + (lengths[2] * Math.Cos(endPsi)) - endZ;
             f[2] = guesses[0] + guesses[1] + guesses[2] - endPsi;
         }
 
         //Update the Jacobian inverse array from the stored guesses by class
-        private void UpdateJInv()
+        private static void UpdateJInv()
         {
             jInv[0, 0] = -Math.Sin(guesses[0] + guesses[1]) / (lengths[0] * Math.Cos(guesses[0] + guesses[1]) * Math.Sin(guesses[0]) - lengths[0] * Math.Sin(guesses[0] + guesses[1]) * Math.Cos(guesses[0]));
             jInv[0, 1] = -Math.Cos(guesses[0] + guesses[1]) / (lengths[0] * Math.Cos(guesses[0] + guesses[1]) * Math.Sin(guesses[0]) - lengths[0] * Math.Sin(guesses[0] + guesses[1]) * Math.Cos(guesses[0]));
@@ -60,7 +50,7 @@ namespace ConsoleApp1
 
         #region Solver
         //Checks if solution will converge
-        public bool WillSolutionConverge(double finalR, double finalZ, double finalPsi)
+        public static bool WillSolutionConverge(double finalR, double finalZ, double finalPsi)
         {
             //reset guesses and set some of the determined class variabls
             SetGuesses();
@@ -68,7 +58,7 @@ namespace ConsoleApp1
             endZ = finalZ;
             endPsi = finalPsi;
 
-            double[] deltaGuess = new double[3] { 10, 10, 10 };
+            double[] deltaGuess = { 10, 10, 10 };
             int iterationCount = 0;
             //While any of the delta guesses is greater than a set out tolerance
             while ((
@@ -102,45 +92,57 @@ namespace ConsoleApp1
         #endregion
 
         #region Set function variables
-        private void SetGuesses()
+        public static void SetGuesses()
         {
             guesses[0] = 10 * Math.PI / 180;
             guesses[1] = 20 * Math.PI / 180;
             guesses[2] = 30 * Math.PI / 180;
         }
-        private void SetLengths(double length1, double length2, double length3)
+
+        private static void SetLengths(double length1, double length2, double length3)
         {
             lengths[0] = length1;
             lengths[1] = length2;
             lengths[2] = length3;
         }
-        private double SetPrincipleAngles(double x, double y)
+
+        private static double SetPrincipleAngles(double x, double y)
         {
             //Sets principle angles at initiation. If an x or y is 0 to start
             //Special cases need to be handled
-            if (x >= 0 && y == 0)
+            if (x >= 0 && Math.Abs(y) < ABSVALUETOL)
+            {
                 return 0;
-            else if (x < 0 && y == 0)
+            }
+            else if (x < 0 && Math.Abs(y) < ABSVALUETOL)
+            {
                 return -180;
-            else if (x == 0 && y >= 0)
+            }
+            else if (Math.Abs(x) < ABSVALUETOL && y >= 0)
+            {
                 return 90;
-            else if (x == 0 && y < 0)
+            }
+            else if (Math.Abs(x) < ABSVALUETOL && y < 0)
+            {
                 return -270;
+            }
             else
+            {
                 return Math.Tan(y / x);
+            }
         }
         #endregion
 
 
         #region Run 360 Degrees
-        public List<FinalAngles> RunPointSimulation(double endX, double endY, double endZ)
+        public static List<FinalAngles> RunPointSimulation(double endXIn, double endYIn, double endZIn)
         {
             //Calculate and set class variables
-            this.endR = Math.Sqrt(endX * endX + endY * endY);
-            this.endZ = endZ;
+            endR = Math.Sqrt(endXIn * endXIn + endYIn * endYIn);
+            endZ = endZIn;
 
             //Determine distance of the requested point to origin.
-            double radius = Math.Sqrt(this.endR * this.endR + this.endZ * this.endZ);
+            double radius = Math.Sqrt(endR * endR + endZ * endZ);
             //If the point is outside of the bounds notify user and return empty list
             if (radius < innerRadius || radius > OuterRadius())
             {
@@ -151,7 +153,7 @@ namespace ConsoleApp1
             //Declare variables to store  diverging and non diverging points
             List<FinalAngles> possibleConfigurations = new List<FinalAngles>();
             //Store the principle angle
-            double principleAngle = SetPrincipleAngles(endX, endY);
+            Console.WriteLine($"Principle Angle: {SetPrincipleAngles(endXIn, endYIn)}");
 
             //Iterate all 360 degrees
             for (int angle = 0; angle < 360; angle++)
@@ -159,32 +161,55 @@ namespace ConsoleApp1
                 //Degrees to radians
                 endPsi = angle * Math.PI / 180;
 
-                //If converges add results to return variable 
-                if (WillSolutionConverge(this.endR, endZ, endPsi))
-                    possibleConfigurations.Add(new FinalAngles(principleAngle, guesses[0], guesses[1], guesses[2]));
+                if(WillSolutionConverge(endR, endZ, endPsi))
+                {
+                    //Create a configuration after rounding
+                    var config = new FinalAngles(guesses[0], guesses[1], guesses[2]);
+
+                    //If we are doing a blind run (don't care about duplicates)
+                    if (runFastFlag)
+                    {
+                        possibleConfigurations.Add(config);
+                    }
+                    //Otherwise remove duplicates that have all angles within the tolerance of a
+                    //same configuration. Assume if criteria is met, then duplicates
+                    else if (possibleConfigurations.All(configOption =>
+                        !
+                    (configOption.link1Angle - config.link1Angle < ANGLETOL &&
+                        configOption.link2Angle - config.link2Angle < ANGLETOL &&
+                        configOption.link3Angle - config.link3Angle < ANGLETOL)))
+                    {
+                        possibleConfigurations.Add(config);
+                    }
+                }
 
                 //Reset the guesses
                 SetGuesses();
             }
 
             return possibleConfigurations;
-
         }
         #endregion
 
         #region Checking
-        public void SetRadius(double[] arrayLengths)
+        public static void SetRadius(double[] arrayLengths)
         {
             //Sorte the array from lowest to highest lengths
             Array.Sort(arrayLengths);
             //If no diverging points set inner radius to 0 otherwise set the inner radius
             if (arrayLengths[0] + arrayLengths[1] >= arrayLengths[2])
-                this.inerRadius = 0;
+            {
+                inerRadius = 0;
+            }
             else
-                this.inerRadius = arrayLengths[2] - arrayLengths[0] - arrayLengths[1];
+            {
+                inerRadius = arrayLengths[2] - arrayLengths[0] - arrayLengths[1];
+            }
+
+            SetGuesses();
         }
 
-        public double OuterRadius()
+        public static double OuterRadius()
         {
             //Determine the outer radius
             return lengths[0] + lengths[1] + lengths[2];

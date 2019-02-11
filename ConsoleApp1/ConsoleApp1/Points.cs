@@ -8,8 +8,8 @@ namespace ConsoleApp1
 {
     public class Points
     {
-        //Stores r and z values
-        double r, z;
+        private readonly double r;
+        private readonly double z;
 
         public Points (double r, double z)
         {
