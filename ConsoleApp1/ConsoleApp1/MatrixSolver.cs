@@ -135,7 +135,7 @@ namespace ConsoleApp1
 
 
         #region Run 360 Degrees
-        public static List<FinalAngles> RunPointSimulation(double endXIn, double endYIn, double endZIn)
+        public static IEnumerable<FinalAngles> RunPointSimulation(double endXIn, double endYIn, double endZIn)
         {
             //Calculate and set class variables
             endR = Math.Sqrt(endXIn * endXIn + endYIn * endYIn);
@@ -192,18 +192,18 @@ namespace ConsoleApp1
         #endregion
 
         #region Checking
-        public static void SetRadius(double[] arrayLengths)
+        public static void SetRadius()
         {
             //Sorte the array from lowest to highest lengths
-            Array.Sort(arrayLengths);
+            Array.Sort(lengths);
             //If no diverging points set inner radius to 0 otherwise set the inner radius
-            if (arrayLengths[0] + arrayLengths[1] >= arrayLengths[2])
+            if (lengths[0] + lengths[1] >= lengths[2])
             {
                 inerRadius = 0;
             }
             else
             {
-                inerRadius = arrayLengths[2] - arrayLengths[0] - arrayLengths[1];
+                inerRadius = lengths[2] - lengths[0] - lengths[1];
             }
 
             SetGuesses();

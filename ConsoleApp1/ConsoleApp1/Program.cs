@@ -6,62 +6,85 @@ namespace ConsoleApp1
 {
     class Program
     {
-        //Set this flag to false to avoid duplicates within tolerance
-        //This will slow down execution
+        // Set this flag to false to avoid duplicates within tolerance
+        // NOTE: This will slow down execution
         private static readonly bool runFast = false;
 
-        //This is the main function that determined divergent points for 
-        //A configuration described by assigned variables
+        //Other variables
+        private static readonly IEnumerable<Points> points = new List<Points>();
+        private static IEnumerable<FinalAngles> possibleSolutions;
+        private static readonly double[] lengths = new double[3];
+        private static readonly double[] point = new double[3];
+
         static void Main(string[] args)
         {
-            //Declare variables to store lengths and points
-            List<Points> points = new List<Points>();
-            double[] lengths = new double[3];
-            double[] point = new double[3];
-
-            //Read in parameters from the console
-            for(int i = 0; i < 3; i++)
-            {
-                Console.Write($"Length{i} ");
-                double.TryParse(Console.ReadLine(), out lengths[i]);
-            }
-
-            Console.Write("x value ");
-            double.TryParse(Console.ReadLine(), out point[0]);
-            Console.Write("y value ");
-            double.TryParse(Console.ReadLine(), out point[1]);
-            Console.Write("z value ");
-            double.TryParse(Console.ReadLine(), out point[2]);
-
-            //Initialize Matrix Solver With Inputs
-            MatrixSolver.lengths = lengths;
-            MatrixSolver.SetRadius(lengths);
-            MatrixSolver.runFastFlag = runFast;
+            GetSystemParameters();
 
             //Run the simulation for the provided point
-            List<FinalAngles> possibleSolutions =
-                MatrixSolver.RunPointSimulation(point[0], point[1], point[2]);
+            InitializeMatrix();
+            possibleSolutions = MatrixSolver.RunPointSimulation(point[0], point[1], point[2]);
 
             //Display Solutions
-            if(possibleSolutions.Count != 0)
+            if(possibleSolutions.Any())
             {
-                possibleSolutions = possibleSolutions
-                    .OrderBy(slns => slns.link1Angle)
-                    .ThenBy(slns => slns.link2Angle)
-                    .ThenBy(slns => slns.link3Angle)
-                    .ToList();
-
-                Console.WriteLine("Format: Link 1 angle, Link 2 angle, Link 3 angle \n");
-
-                foreach (var solution in possibleSolutions)
-                {
-                    Console.WriteLine($"{solution.link1Angle}, {solution.link2Angle}, {solution.link3Angle}");
-                }
+                PrintSln();
             }
            
             //Wait for user to terminate program
             Console.WriteLine("\nHit Enter to Exit");
             Console.ReadLine();
+        }
+
+        private static void GetSystemParameters()
+        {
+            // Read in params from the user
+            for (int i = 0; i < 3; i++)
+            {
+                Console.Write($"Length {i+1} :");
+                String Result = Console.ReadLine();
+
+                while (!double.TryParse(Result, out lengths[i]))
+                {
+                    Console.Write($"Not a valid number, try again. \nLength {i+1} :");
+                    Result = Console.ReadLine();
+                }
+            }
+
+            char[] xyz = { 'x', 'y', 'z' };
+            for (int i = 0; i < 3; i++)
+            {
+                Console.Write($"{xyz[i]} value :");
+                String Result = Console.ReadLine();
+
+                while (!double.TryParse(Result, out point[i]))
+                {
+                    Console.Write($"Not a valid number, try again. \n{xyz[i]} value :");
+                    Result = Console.ReadLine();
+                }
+            }
+        }
+
+        private static void InitializeMatrix()
+        {
+            MatrixSolver.lengths = lengths;
+            MatrixSolver.SetRadius();
+            MatrixSolver.runFastFlag = runFast;
+        }
+
+        private static void PrintSln()
+        {
+            possibleSolutions = possibleSolutions
+                    .OrderBy(slns => slns.link1Angle)
+                    .ThenBy(slns => slns.link2Angle)
+                    .ThenBy(slns => slns.link3Angle)
+                    .ToList();
+
+            Console.WriteLine("Format: Link 1 angle, Link 2 angle, Link 3 angle \n");
+
+            foreach (var solution in possibleSolutions)
+            {
+                Console.WriteLine($"{solution.link1Angle}, {solution.link2Angle}, {solution.link3Angle}");
+            }
         }
     }
 }
