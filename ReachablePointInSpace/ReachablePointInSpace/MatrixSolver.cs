@@ -154,7 +154,6 @@ namespace ReachablePointInSpace
 
             //Declare variables to store  diverging and non diverging points
             List<FinalAngles> possibleConfigurations = new List<FinalAngles>();
-            //Store the principle angle
             Console.WriteLine($"Principle Angle: {SetPrincipleAngles(endXIn, endYIn)}");
 
             //Iterate all 360 degrees

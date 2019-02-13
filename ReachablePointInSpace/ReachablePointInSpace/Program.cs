@@ -21,7 +21,7 @@ namespace ReachablePointInSpace
             GetSystemParameters();
 
             //Run the simulation for the provided point
-            InitializeMatrix();
+            InitializeMatrixSolver();
             possibleSolutions = MatrixSolver.RunPointSimulation(point[0], point[1], point[2]);
 
             //Display Solutions
@@ -64,7 +64,7 @@ namespace ReachablePointInSpace
             }
         }
 
-        private static void InitializeMatrix()
+        private static void InitializeMatrixSolver()
         {
             MatrixSolver.lengths = lengths;
             MatrixSolver.SetRadius();

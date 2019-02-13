@@ -1,6 +1,14 @@
 ﻿<Properties StartupConfiguration="{6E22FB93-0BB5-41BF-9EB2-F3DA63552807}|Default">
   <MonoDevelop.Ide.ItemProperties.MTE204Project PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MTE204Project/Views/DivergenceApp/Index.cshtml">
+    <Files>
+      <File FileName="MTE204Project/Controllers/DivergenceAppController.cs" Line="18" Column="45" />
+      <File FileName="MTE204Project/Program.cs" Line="23" Column="26" />
+      <File FileName="MTE204Project/Helpers/MatrixSolver.cs" Line="180" Column="26" />
+      <File FileName="MTE204Project/Models/FinalAngles.cs" Line="18" Column="34" />
+      <File FileName="MTE204Project/Views/DivergenceApp/Index.cshtml" Line="40" Column="27" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
