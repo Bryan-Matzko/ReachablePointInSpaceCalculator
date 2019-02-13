@@ -1,0 +1,17 @@
+﻿<Properties StartupConfiguration="{BBEA3119-BEF6-417E-A09E-899AF0C3C5C9}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ReachablePointInSpace/MatrixSolver.cs">
+    <Files>
+      <File FileName="ReachablePointInSpace/Program.cs" Line="17" Column="56" />
+      <File FileName="ReachablePointInSpace/FinalAngles.cs" Line="8" Column="22" />
+      <File FileName="ReachablePointInSpace/MatrixSolver.cs" Line="10" Column="10" />
+      <File FileName="ReachablePointInSpace/Point.cs" Line="7" Column="26" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.ReachablePointInSpace PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
